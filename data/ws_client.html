@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Ws Client 测试</h1>
+
+<script>
+	let wsUrl = 'ws://192.168.10.10:8812';
+
+	let websocket = new WebSocket(wsUrl);
+
+	websocket.onopen = function (event) {
+		websocket.send('Hello Shiwuhao');
+		console.log('connected-swoole-success');
+	}
+
+	websocket.onmessage = function (event) {
+		console.log('ws-server-return-data:' + event.data);
+	}
+
+	websocket.onclose = function (event) {
+		console.log('ws-server-close:');
+	}
+
+	websocket.onerror = function (event, e) {
+		console.log('error', event.data);
+		console.log(e);
+	}
+
+
+</script>
+</body>
+</html>

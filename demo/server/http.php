@@ -14,7 +14,18 @@ $http->set([
 ]);
 
 $http->on('request', function ($request, $response) {
-    $swh = $request->get['swh'];
+
+    $log = [
+        'date: ' => date('Y-m-d H:i:s'),
+        'get' => $request->get,
+        'post' => $request->post,
+        'header' => $request->header,
+    ];
+
+    swoole_async_writefile(__DIR__ . '/access.log', json_encode($log) . PHP_EOL, function ($filename) {
+        echo '日志写入成功' . PHP_EOL;
+    }, FILE_APPEND);
+
     $response->cookie('swh', '123', time() + 1800);
     $response->end(json_encode($request->get));
 });

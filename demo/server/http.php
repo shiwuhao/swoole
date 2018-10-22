@@ -9,9 +9,12 @@
 $http = new swoole_http_server("0.0.0.0", 8811);
 
 $http->set([
+    'worker_num' => 4, // 设置启动的Worker进程数。
+    'max_request' => 10000,
     'enable_static_handler' => true,
     'document_root' => "/home/vagrant/code/swoole/data"
 ]);
+
 
 $http->on('request', function ($request, $response) {
 

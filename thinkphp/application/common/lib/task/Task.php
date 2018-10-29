@@ -24,7 +24,7 @@ class Task
      * @param $serv
      * @return bool
      */
-    public function sendSms($data, $serv = null)
+    public function sendSms($data, $serv)
     {
         try {
             $response = Sms::sendSms($data['phone'], $data['code']);

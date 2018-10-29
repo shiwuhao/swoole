@@ -78,6 +78,11 @@ class Predis
         return $this->redis->sMembers($key);
     }
 
+    public function sadd($key, $value)
+    {
+        return $this->redis->sAdd($key, $value);
+    }
+
     /**
      * @param $name
      * @param $arguments

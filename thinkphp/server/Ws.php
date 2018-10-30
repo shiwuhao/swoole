@@ -18,6 +18,7 @@ class Ws
      * port
      */
     const PORT = 8811;
+    CONST CHART_PORT = 8812;
     /**
      * http server
      * @var null
@@ -32,13 +33,15 @@ class Ws
 //        Predis::getInstance()->del('live_game_key');
 
         $config = [
-            'worker_num' => 4, // 设置启动的Worker进程数。
-            'task_worker_num' => 5,
+            'worker_num' => 5, // 设置启动的Worker进程数。
+            'task_worker_num' => 4,
             'max_request' => 10000,
             'enable_static_handler' => true,
             'document_root' => "/home/vagrant/code/swoole/thinkphp/public/static"
         ];
         $this->ws = new swoole_websocket_server(self::HOST, self::PORT);
+        $this->ws->listen(self::HOST, self::CHART_PORT, SWOOLE_SOCK_TCP);
+
         $this->ws->set($config);
 
         $this->init();
@@ -50,6 +53,7 @@ class Ws
      */
     public function init()
     {
+//        $this->ws->on("start", [$this, 'onStart']);
         $this->ws->on('open', [$this, 'onOpen']);
         $this->ws->on('message', [$this, 'onMessage']);
         $this->ws->on('workerStart', [$this, 'onWorkerStart']);
@@ -59,6 +63,14 @@ class Ws
         $this->ws->on('close', [$this, 'onClose']);
 
         return $this->ws->start();
+    }
+
+    /**
+     * @param $server
+     */
+    public function onStart($server)
+    {
+        swoole_set_process_name("live_master");
     }
 
     /**
